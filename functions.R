@@ -755,11 +755,13 @@ exportToShapeFile=function(dir,layername, overwrite=T)
   
 }
 
-##Mean traffic flow across links at same timeframe
-plotlinktraffic=function()
+##Traffic flow across links at same timeframe
+plotlinktraffic=function(selectedUJT,timestepranges,nooflinks)
 {
   timestepranges=c(384:396,432:444,462:474)
   nooflinks=17
+  
+  
   matplot(selectedUJT[timestepranges,1], type='l',col=rgb(runif(nooflinks),runif(nooflinks),runif(nooflinks)), xlab = "Time Steps", ylab="Seconds/Metre", main="Traffic flow across links at same timeframe",ylim = c(0,0.25))
   counter=2
   while(counter<=nooflinks)
@@ -769,10 +771,57 @@ plotlinktraffic=function()
   }
 }
 
+## Mean of traffic flow across links
+meanflowacrosslinks=function(selectedUJTn)
+{
+  library(gplots)
+  selectedUJT.rowmean=rowMeans(selectedUJT)
+  return(selectedUJT.rowmean)
+}
+
+trendspotting=function(selectedUJT,selectedUJT.rowmean)
+{
+  old.par <- par(mfrow=c(1, 3))
+  plot(selectedUJT[,14], type='l', xlab="Time Step", ylab="second/metre", main="Ttraffic flow across link 883", col='blue')
+  abline(lm(selectedUJT[,14]~c(1:5400)), col='red')
+  plot(selectedUJT[,11], type='l', xlab="Time Step", ylab="second/metre", main="Traffic flow across link 1770", col='blue')
+  abline(lm(selectedUJT[,11]~c(1:5400)), col='red')
+  plot(selectedUJT.rowmean, type='l', xlab="Time Step", ylab="second/metre", main="Mean traffic flow across links", col='blue')
+  abline(lm(selectedUJT.rowmean~c(1:5400)), col='red')
+  par(old.par)  
+}
+
+patternspotting=function(selectedUJT)
+{
+  e883=plot(selectedUJT[1:2520,14],type='l',xlab='Time steps\n2 weeks from Sat 6am',ylab="seconds/metre",main="Traffic flow for Link 883", col='blue')
+  abline(v=c(180,360,540,720,900,1080), col='red', type='-', lty=2)
+  abline(v=c(1260), col='green', type='-', lty=2)
+  e1770=plot(selectedUJT[1:2520,11],type='l',xlab='Time steps\n2 weeks from Sat 6am',ylab="seconds/metre",main="Traffic flow for Link 1770", col='blue')
+  abline(v=c(180,360,540,720,900,1080), col='red', type='-', lty=2)
+}
+
+seasonalitycheck=function(selectedUJT)
+{
+  counter=1
+  results=c()
+  resultscolnames=c("link","s1","s2","ss1","ss2")
+  while(counter<=17)
+  {
+    
+    seasonalities=detectSeasonality(selectedUJT[1:3780, counter])
+    results=c(results,colnames(selectedUJT)[counter], seasonalities[2],seasonalities[3],seasonalities[2]*5/60,seasonalities[3]*5/60)
+    counter=counter+1
+  }
+  mresults=matrix(results,nrow=17,ncol = 5, byrow = T)
+  savedatatocsv(filename="seasons.csv",(mresults))
+  
+  
+}
 
 
-
-
+require(spdep)
+W=spatialweightnormalise(selectedAdjUJT)
+mat2listw(W, zero.policy=T)
 
 #starimaIdentification(selectedUJTWeekdays, selectedAdjUJT, isSaveToImage=T, weekdaysdata=weekdaysdata, labelling="Weekday")
 
