@@ -47,6 +47,15 @@ selectedAdjUJT=pruneUJTMatrix(selectedlinks_int,LCAPAdj)
 nrmseresults=starimaPredict(selectedUJT, selectedUJT, selectedAdjUJT,isSaveToImage=T,p=2,d=1,q=2, trainstartpoint=1, trainendpoint=4140,devendpoint=5400,labelling="STARIMA_PREDICTED_ALLWEEK_Link_ShortTermView" , plotstart=1,plotend=180)
 generateErrorMetrics(nrmseresults$OBS,nrmseresults$PRE,filename="AllWeekErrorcomputematrix.csv",selectedAdjUJT)
 
+totallinks=dim(selectedAdjUJT)[1]
+counter=1
+while(counter<=totallinks)
+{
+  savedatatocsv(filename = paste("prediction7daysSTARIMALink_",colnames(selectedAdjUJT)[counter],".csv"),df=nrmseresults$PRE[,counter])  
+  counter=counter+1
+}
+
+
 
 
 # nrmseresults$OBS[2]

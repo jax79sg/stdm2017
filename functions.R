@@ -27,7 +27,7 @@ generateMAPE=function(obs,pred)
     {
       At=obs[counter]
       Ft=pred[counter]
-      cat("\nAt:",At,"Ft",Ft,"\n")
+      #cat("\nAt:",At,"Ft",Ft,"\n")
       currentvalue=abs((At-Ft)/At)
       currentsum=currentsum+currentvalue
       counter=counter+1
@@ -709,7 +709,13 @@ starimaPredict=function(weekdaysdata, selectedUJTWeekdays, selectedAdjUJT,isSave
   W_fit=list(w1=selectedAdjUJT)
   #fit.star=starima_fit(selectedUJTWeekdays[1:2304,],W_fit,p=p,d=d,q=q)
   print("\nSTARIMA fitting")
+  timestart=Sys.time()
   fit.star=starima_fit(selectedUJTWeekdays[trainstartpoint:trainendpoint,],W_fit,p=p,d=d,q=q)
+  timeend=Sys.time()
+  timetaken=timeend-timestart
+  print(timestart)
+  print(timeend)
+  print(timetaken)
   #pre.star=starima_pre(selectedUJTWeekdays[(2304-p-d-q+1):2880,],model=fit.star)
   #pre.star=starima_pre(selectedUJTWeekdays[(trainendpoint-p-d-q+1):devendpoint,],model=fit.star)
   print("\nSTARIMA predicting")
@@ -819,9 +825,9 @@ seasonalitycheck=function(selectedUJT)
 }
 
 
-require(spdep)
-W=spatialweightnormalise(selectedAdjUJT)
-mat2listw(W, zero.policy=T)
+#require(spdep)
+#W=spatialweightnormalise(selectedAdjUJT)
+#mat2listw(W, zero.policy=T)
 
 #starimaIdentification(selectedUJTWeekdays, selectedAdjUJT, isSaveToImage=T, weekdaysdata=weekdaysdata, labelling="Weekday")
 
