@@ -3,8 +3,8 @@
 Time Series (R)
 User-installed packages (dependancies not listed)
        Package     Version
-         caret      6.0-73
-    data.table      1.10.4
+         -caret      6.0-73
+    -data.table      1.10.4
       forecast         7.3
         g.data         2.4
          gdata      2.17.0
