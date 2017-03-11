@@ -2,7 +2,7 @@
 rm(list=ls())
 load("UJTWorkSpace.rdata")
 tempworkingdir="temp"
-# setwd(tempworkingdir)
+
 ## These are the selected links to analyse.
 #selectedlinks_int=c(2,3,4,5,8,214,1,89,131,5,112,201)
 selectedlinks_int=c(2090,433,434,2344,1620,1447,417,1518,452,453,2112,2087,2102,446,2358,1614,1400,447,2084,1745,2363,1747,1622,432,1604,2357,2059,1407)
@@ -142,15 +142,15 @@ tsdisplay(selectedUJT[,1])
 
 
 ## Using DSHW
-x=msts(selectedUJT[1:5400,1],seasonal.periods = c(180,1440))
-fitme=dshw(x)
-pred=predict(fitme,h=180)
-matplot(selectedUJT[1:5400,1],type='l')
-matplot(pred$modelhow t,type='l',add = T,col='red',xlim=c(5400,6300))
-matplot(fitme$fitted[1:5400],type='l',add = T,col='red',xlim=c(5400,6300))
-
-bats=tbats(selectedUJT[1:5400,1], seasonal.periods = c(180,1440), use.trend=TRUE, use.parallel=TRUE)
-plot(bats)
+# x=msts(selectedUJT[1:5400,1],seasonal.periods = c(180,1440))
+# fitme=dshw(x)
+# pred=predict(fitme,h=180)
+# matplot(selectedUJT[1:5400,1],type='l')
+# matplot(pred$modelhow ,type='l',add = T,col='red',xlim=c(5400,6300))
+# matplot(fitme$fitted[1:5400],type='l',add = T,col='red',xlim=c(5400,6300))
+# 
+# bats=tbats(selectedUJT[1:5400,1], seasonal.periods = c(180,1440), use.trend=TRUE, use.parallel=TRUE)
+# plot(bats)
 # 
 # ## Using BATS
 # x=msts(selectedUJT[,1],seasonal.periods = c(1350,2700))
@@ -163,9 +163,10 @@ plot(bats)
 # fitme=tbats(x,use.parallel=T)
 # plot(forecast(fitme,h=900))
 
-y=ts(selectedUJTWeekdays[,1],f=180)
-fit=arima(y,order=c(1,1,1), xreg=fourier(y, K=4))
-plot(forecast(fit,h=2*180,xreg=fourier(y,K=4, h=2*180)))
+## Using exponential smoothing
+# y=ts(selectedUJTWeekdays[,1],f=180)
+# fit=arima(y,order=c(1,1,1), xreg=fourier(y, K=4))
+# plot(forecast(fit,h=2*180,xreg=fourier(y,K=4, h=2*180)))
 
 #fit=arima(selectedUJTWeekdays[,1],order=c(1,1,1), seasonal=list(order=c(1,1,0), period=180), optim.method="Nelder-Mead")
 

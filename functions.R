@@ -1,18 +1,20 @@
 ## Stores all the functions created for assignment.
 
-
+## MSE computation function
 generateMSE=function(obs,pred)
 {
   require(hydroGOF)
   return(hydroGOF::mse  (obs,pred))
 }
 
+## MAE computation function
 generateMAE=function(obs,pred)
 {
   require(hydroGOF)
   return(hydroGOF::mae  (obs,pred))
 }
 
+## MAPE computation function
 generateMAPE=function(obs,pred)
 {
   cat("\nSize is: ",length(obs)," vs ", length(pred),"\n")
@@ -47,11 +49,6 @@ generateMAPE=function(obs,pred)
 }
 
 
-# generateMAPE=function(obs,pred)
-# {
-# #  require(hydroGOF)
-# #  return(hydroGOF::mape  (obs,pred))
-# }
 
 ## To compute MSE and MAE from obs and pred and return.
 ## adjMetric (Mainly used to identify col names, or link ids)
@@ -79,7 +76,7 @@ generateErrorMetrics=function(obs,pred,filename,adjMetric)
   
 }
 
-
+#Split up dataset into 80% split set
 getTrainSet=function(data,percentTrain=80)
 {
   cat("\nTrainfunction class:", class(data))
@@ -95,6 +92,7 @@ getTrainSet=function(data,percentTrain=80)
   return (traindata)
 }
 
+#Split up dataset into 20% split set
 getDevSet=function(data,percentTrain=80)
 {
   cat("\nTrainfunction class:", class(data))
@@ -176,6 +174,7 @@ pruneWeekendDataset=function()
 }
 
 
+#Prune dataset into days
 pruneDailyDataset=function()
 {
   day6=c(1:180,1261:1440,2520:2701,3960:4141)
@@ -550,95 +549,10 @@ starimaIdentification=function(timeseriesmatrix, spatialweightmatrix, isSaveToIm
     linkindex=linkindex+1
   }  
   
-  # 
-  # nooflinks=dim(spatialweightmatrix)[1]
-  # linkindex=1
-  # while(linkindex<=nooflinks)
-  # {
-  #   if (isSaveToImage)
-  #   {
-  #     png(file=paste("STACF_",labelling,"_Link: ",colnames(weekdaysdata)[linkindex], sep=""),width=1680,height=1050)            
-  #   }
-  #   else
-  #   {
-  #     dev.new()
-  #   }
-  #   stacf(timeseriesmatrix,spatialweightmatrix,500)  
-  #   legend("topright", inset=0., legend = c("Data"), col=(1), lty=c(1))
-  #   title(paste("STACF_",labelling,"_Link",colnames(weekdaysdata)[linkindex], sep=""))
-  #   if (isSaveToImage)
-  #   {
-  #     dev.off()
-  #   }
-  #   
-  #   if (isSaveToImage)
-  #   {
-  #     png(file=paste("STPACF_",labelling,"_Link: ",colnames(weekdaysdata)[linkindex], sep=""),width=1680,height=1050)            
-  #   }
-  #   else
-  #   {
-  #     dev.new()
-  #   }
-  #   stpacf(timeseriesmatrix,spatialweightmatrix,500)  
-  #   legend("topright", inset=0., legend = c("Data"), col=(1), lty=c(1))
-  #   title(paste("STPACF_",labelling,"_Link",colnames(weekdaysdata)[linkindex], sep=""))
-  #   if (isSaveToImage)
-  #   {
-  #     dev.off()
-  #   }  
-  #   
-  #   
-  #   if (isSaveToImage)
-  #   {
-  #     png(file=paste("STACF_",labelling,"_1lag_diff","_Link",colnames(weekdaysdata)[linkindex], sep=""),width=1680,height=1050)            
-  #   }
-  #   else
-  #   {
-  #     dev.new()
-  #   }
-  #   timeseriesmatrix.diff1=diff(timeseriesmatrix,lag=1,differences = 1)
-  #   stacf(timeseriesmatrix.diff1,spatialweightmatrix,30)  
-  #   legend("topright", inset=0., legend = c("Data"), col=(1), lty=c(1))
-  #   title(paste("STACF_",labelling,"_1lag_diff","_Link: ",colnames(weekdaysdata)[linkindex], sep=""))
-  #   if (isSaveToImage)
-  #   {
-  #     dev.off()
-  #   }
-  #   
-  #   
-  #   if (isSaveToImage)
-  #   {
-  #     png(file=paste("STPACF_",labelling,"_1lag_diff","_Link",colnames(weekdaysdata)[linkindex], sep="") ,width=1680,height=1050)            
-  #   }
-  #   else
-  #   {
-  #     dev.new()
-  #   }
-  #   timeseriesmatrix.diff1=diff(timeseriesmatrix,lag=1,differences = 1)
-  #   stpacf(timeseriesmatrix.diff1,spatialweightmatrix,30)  
-  #   legend("topright", inset=0., legend = c("Data"), col=(1), lty=c(1))
-  #   title(paste("STPACF_",labelling,"_1lag_diff","_Link: ",colnames(weekdaysdata)[linkindex], sep=""))
-  #   if (isSaveToImage)
-  #   {
-  #     dev.off()
-  #   }      
-  #   linkindex=linkindex+1
-  # }
-
-  
-  
-
-  ## Seasonal differencing could not make data stationary. 
-  ## But if perform single lag differencing, data becomes stationary. 
-  ## Thus no seasonal differencing implemented
-  ##There is a nonseasonal difference component of 1, d=1
-  ##Based on ACF. There is a MA component of 1 lag, q=1
-  ##(One or more spikes, rest are essentially zero)
-  
-  ##Therefore STARIMA(0,1,1) chosen as model
 }
 
 
+#Normaise spatial weight
 spatialweightnormalise=function(selectedAdjUJT)
 {
   ## Spread weight assuming equal influence. Cannot use rowMeans as it cannot handle cases where a link has zero connections to other links.
@@ -700,12 +614,7 @@ starimaPredict=function(weekdaysdata, selectedUJTWeekdays, selectedAdjUJT,isSave
     print(selectedAdjUJT[counter,])
     counter=counter+1
   }
-  #cat("\n\nselectedAdjUJT/rowmeans:",selectedAdjUJT,"\n")
-  # print("selectedAdjUJT/rowmeans")
-  # for (item in selectedAdjUJT[1:5,])
-  # {
-  #   print(item)
-  # }
+
   W_fit=list(w1=selectedAdjUJT)
   #fit.star=starima_fit(selectedUJTWeekdays[1:2304,],W_fit,p=p,d=d,q=q)
   print("\nSTARIMA fitting")
@@ -733,8 +642,6 @@ starimaPredict=function(weekdaysdata, selectedUJTWeekdays, selectedAdjUJT,isSave
     {
       png(file=paste(labelling,colnames(selectedAdjUJT)[linkindex],".png", sep=""),width=1680,height=1050)            
     }
-#    print((trainendpoint+1+plotend)-(trainendpoint+1+plotstart))
-#    print(plotend-plotstart)
     #matplot(selectedUJTWeekdays[(trainendpoint+1+plotstart):(trainendpoint+1+plotend),linkindex],type="l",ylab="second/metre",xlab = "Time Step")
     matplot(pre.star$OBS[plotstart:plotend,linkindex],type="l",ylab="second/metre",xlab = "Time Step")
     matplot(pre.star$PRE[plotstart:plotend,linkindex],type="l",add=T,col='red')
@@ -766,25 +673,32 @@ plotlinktraffic=function(selectedUJT,timestepranges,nooflinks)
 {
   timestepranges=c(384:396,432:444,462:474)
   nooflinks=17
-  
-  
-  matplot(selectedUJT[timestepranges,1], type='l',col=rgb(runif(nooflinks),runif(nooflinks),runif(nooflinks)), xlab = "Time Steps", ylab="Seconds/Metre", main="Traffic flow across links at same timeframe",ylim = c(0,0.25))
+  currentcolor=rgb(runif(nooflinks),runif(nooflinks),runif(nooflinks))
+  colorcodes=c(currentcolor)
+  matplot(selectedUJT[timestepranges,1], type='l',col=currentcolor, xlab = "Time Steps", ylab="Seconds/Metre", main="Traffic flow across links at same timeframe",ylim = c(0,0.25))
   counter=2
   while(counter<=nooflinks)
   {
-    matplot(selectedUJT[timestepranges,counter], type='l',col=rgb(runif(nooflinks),runif(nooflinks),runif(nooflinks)), add = T)
+    currentcolor=rgb(runif(nooflinks),runif(nooflinks),runif(nooflinks))
+    colorcodes=c(colorcodes,currentcolor)
+    matplot(selectedUJT[timestepranges,counter], type='l',col=currentcolor, add = T)
     counter=counter+1
   }
+  legend("topleft", legend = colnames(selectedUJT), col=colorcodes, lwd = 1)
+  
 }
 
+
+
 ## Mean of traffic flow across links
-meanflowacrosslinks=function(selectedUJTn)
+meanflowacrosslinks=function(selectedUJT)
 {
   library(gplots)
   selectedUJT.rowmean=rowMeans(selectedUJT)
   return(selectedUJT.rowmean)
 }
 
+#Plot traffic flow for visual analysis
 trendspotting=function(selectedUJT,selectedUJT.rowmean)
 {
   old.par <- par(mfrow=c(1, 3))
@@ -797,6 +711,7 @@ trendspotting=function(selectedUJT,selectedUJT.rowmean)
   par(old.par)  
 }
 
+#Plot traffic flow for visual analysis
 patternspotting=function(selectedUJT)
 {
   e883=plot(selectedUJT[1:2520,14],type='l',xlab='Time steps\n2 weeks from Sat 6am',ylab="seconds/metre",main="Traffic flow for Link 883", col='blue')
@@ -806,6 +721,7 @@ patternspotting=function(selectedUJT)
   abline(v=c(180,360,540,720,900,1080), col='red', type='-', lty=2)
 }
 
+#Detect seasonalities
 seasonalitycheck=function(selectedUJT)
 {
   counter=1
@@ -825,96 +741,25 @@ seasonalitycheck=function(selectedUJT)
 }
 
 
-#require(spdep)
-#W=spatialweightnormalise(selectedAdjUJT)
-#mat2listw(W, zero.policy=T)
-
-#starimaIdentification(selectedUJTWeekdays, selectedAdjUJT, isSaveToImage=T, weekdaysdata=weekdaysdata, labelling="Weekday")
-
-# Plot the selected links
-#plotacfbycol(df=selectedUJT,F, 3000)
-#plotpacfbycol(df=selectedUJT,T, 3000)
-#plotbycol(df=selectedUJT,T, 3000)
-
-## Difference the data
-## What's noted is that just by differencing once, can achieve stationarity for all dataset
-## Checked with Tao Cheng verbally, if can difference by 1 and achieve stationarity, then no need to do seasonal
-## differenced_lag1_selectedUJTWeekdays=differencebycol(df=selectedUJTWeekdays,lag=180)
-
-## Test stationarity
-## stationarytestbycol(differenced_lag1_selectedUJTWeekdays)
-#stationarytestbyitem(selectedUJT[,"1447"],"Link 1447")
-
-
-
-
-
-
-
-
-
-
-
-#print(class(differenced_lag1_selectedUJT))
-#baseset=selectedUJT[,"1447"]
-#differenced_lag1_baseset=differenced_lag1_selectedUJT[,"1447"]
-#Seasonal differencing for both cycles
-#acf(baseset,lag.max=500)
-#acf(differenced_lag1_baseset,lag.max=500)
-
-#link1447_lag1350=diff(baseset,lag=1350, differences=1)
-#link1447_lag1350_180=diff(link1447_lag1350,lag=180, differences=1)
-#link1447_lag1350_180_1lag=diff(link1447_lag1350,lag=1, differences=2)
-#link1447_1lag=diff(baseset,lag=1, differences=1)
-
-#plot(baseset, type='l')
-#plot(link1447_lag1350, type='l')
-#plot(link1447_lag1350_180, type='l')
-#plot(link1447_lag1350_180_1lag, type='l')
-#acf(baseset,lag.max=500)
-#acf(logbaseset,lag.max=20)
-#acf(link1447_1lag,lag.max=500)
-#acf(link1447_lag1350,lag.max=500)
-#acf(link1447_lag1350_180,lag.max=500)
-#acf(link1447_lag1350_180_1lag,lag.max=500)
-#acf(link1447_lag1350_180_1lag,lag.max=500 )
-
-#pacf(link1447_1lag,lag.max=500)
-#pacf(link1447_lag1350,lag.max=500)
-#pacf(link1447_lag1350_180,lag.max=500)
-#pacf(link1447_lag1350_180_1lag,lag.max=500)
-#pacf(link1447_lag1350_180_1lag,,lag.max=500 )
-
-
-#stationarytest=link1447_1lag
-#Box.test(stationarytest,lag=1,type="Ljung-Box")
-#adf.test(stationarytest, alternative="stationary")
-#kpssresults=kpss.test(stationarytest)
-#kpssresults
-
-
-
-#link1447_lag180=diff(selectedUJT[,"1447"],lag=180, differences=1)
-
-
-#link1447_lag180_1350=diff(link1447_lag180,lag=1350, differences=1)
-
-#plot((link1447_lag1350_180), main=paste("Seasonal differenced Link ",colnames(df)[tempCount], sep=""), type='l', xlab="Time steps", ylab="Seconds/Metre", col='blue')
-#acf(link1447_lag1350_180, lag.max=5000, xlab="Lag",ylab="ACF", main="Differenced ACF Plot of daily traffic")
-
-
-#plot((link1447_lag180_1350), main=paste("Seasonal differenced Link ",colnames(df)[tempCount], sep=""), type='l', xlab="Time steps", ylab="Seconds/Metre", col='blue')
-#acf(link1447_lag180_1350, lag.max=5000, xlab="Lag",ylab="ACF", main="Differenced ACF Plot of daily traffic")
-
-
-
-#testme =decompose(ts(selectedUJT[,"2017"],frequency = 207))$x-decompose(ts(selectedUJT[,"2017"],frequency = 207))$random-decompose(ts(selectedUJT[,"2017"],frequency = 207))$trend
-#testme =decompose(ts(UJT[,"2017"],frequency = 207))$x-decompose(ts(UJT[,"2017"],frequency = 207))$random
-#plot(testme)
-#plot(UJT[,"2017"],type='l')
-#plot((link1447_lag1350), main=paste("Seasonal differenced Link ",colnames(df)[tempCount], sep=""), type='l', xlab="Time steps", ylab="Seconds/Metre", col='blue')
-#acf(link1447_lag1350, lag.max=5000, xlab="Lag",ylab="ACF", main="Differenced ACF Plot of daily traffic")
-
-#plot((link1447_lag180), main=paste("Seasonal differenced Link ",colnames(df)[tempCount], sep=""), type='l', xlab="Time steps", ylab="Seconds/Metre", col='blue')
-#acf(link1447_lag180, lag.max=5000, xlab="Lag",ylab="ACF", main="Differenced ACF Plot of daily traffic")
+# Plot the different differencing
+differencingPlot=function(selectedUJT)
+{
+  old.par <- par(mfrow=c(2, 2))
+  png(file=paste("STACF_180_lag",counter,".png", sep="") ,width=1680,height=1050)  
+  stacf(diff(selectedUJT, lag = 180, differences=1),selectedAdjUJT,3000)  
+  title(paste("Difference by lag 180", sep=""), line=-2)
+  dev.off()
+  png(file=paste("STACF_1260_lag",counter,".png", sep="") ,width=1680,height=1050)  
+  stacf(diff(selectedUJT, lag = 1260, differences=1),selectedAdjUJT,3000)  
+  title(paste("Difference by lag 1260", sep=""), line=-2)
+  dev.off()
+  png(file=paste("STACF_1260_180_lag",counter,".png", sep="") ,width=1680,height=1050)  
+  stacf(diff(diff(selectedUJT, lag = 1260, differences=1), lag = 180, differences=1),selectedAdjUJT,3000)  
+  title(paste("Difference by lag 1260 and then 180", sep=""), line=-2)
+  dev.off()
+  png(file=paste("STACF_180_1260_lag",counter,".png", sep="") ,width=1680,height=1050)  
+  stacf(diff(diff(selectedUJT, lag = 180, differences=1), lag=1260, differences = 1),selectedAdjUJT,3000)  
+  title(paste("Difference by lag 180 and then 1260", sep=""), line=-2)
+  dev.off()
+}
 

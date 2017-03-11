@@ -1,6 +1,4 @@
 rm(list=ls())
-#tempworkingdir="/Users/jax/ucl/SpatialTemporalDataMining/assignment/starima"
-#setwd(tempworkingdir)
 
 
 ## STARIMA calls
@@ -19,7 +17,6 @@ selectedlinks_int=c(2334,2240,2237,2236,2185,2184,2183,1872,1870,1771,1770,1214,
 source("functions.R")
 
 cleanupall()
-#exportToShapeFile(dir=tempworkingdir,layername="ALL_LINKS", overwrite=T)
 
 ## seq of selected links
 selectedlinks=listToString(selectedlinks_int)
@@ -32,11 +29,7 @@ selectedUJTWeekdays=pruneWeekdayDataset()[,selectedlinks]
 ## Refine adj matrix to selected links only
 selectedAdjUJT=pruneUJTMatrix(selectedlinks_int,LCAPAdj)
 
-#source("starima_package.R")
 
-# stmatrix=diff(selectedUJT%*%selectedAdjUJT, lag = 180, differences=1)
-# acf(stmatrix, lag.max = 500)
-# stacf(diff(selectedUJT, lag=180, differences = 1),selectedAdjUJT,5000)
 ## Performing STARIMA weekdays dataset only
 # nrmseresults=starimaPredict(weekdaysdata, selectedUJTWeekdays, selectedAdjUJT,isSaveToImage=T,p=0,d=1,q=1, trainstartpoint=1, trainendpoint=2304,devendpoint=2880, labelling="STARIMA_PREDICTED_WEEKDAY_Link_ShortTermView", plotstart=1,plotend=500 )
 # generateErrorMetrics(nrmseresults$OBS,nrmseresults$PRE,filename="WeekdaysErrorcomputematrix.csv",selectedAdjUJT)
@@ -54,9 +47,3 @@ while(counter<=totallinks)
   savedatatocsv(filename = paste("prediction7daysSTARIMALink_",colnames(selectedAdjUJT)[counter],".csv"),df=nrmseresults$PRE[,counter])  
   counter=counter+1
 }
-
-
-
-
-# nrmseresults$OBS[2]
-# nrmseresults$PRE[2]
