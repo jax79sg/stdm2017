@@ -1,66 +1,59 @@
-# stdm2017
+# CEGEG076: Spatio-temporal Analysis and Data Mining
 
-Time Series (R)
-User-installed packages (dependancies not listed)
 
-Package     Version
+** Time Series (R) User-installed packages (dependancies not listed)
++ Package     Version
+  + caret      6.0-73
+  + data.table      1.10.4
+  + forecast         7.3
+  + data.table      1.10.4
+  + forecast         7.3
+  + g.data         2.4
 
-caret      6.0-73
+  + gdata      2.17.0
 
-data.table      1.10.4
+  + ggplot2       2.2.1
 
-forecast         7.3
+  + gmodels      2.16.2
 
-data.table      1.10.4
+  + gplots       3.0.1
 
-forecast         7.3
+  + gstat       1.1-4
 
-g.data         2.4
+  + gtable       0.2.0
 
-gdata      2.17.0
+  + gtools       3.5.0
 
-ggplot2       2.2.1
+  + hydroGOF       0.3-8
 
-gmodels      2.16.2
+  + hydroTSM     0.4-2-1
 
-gplots       3.0.1
+  + igraph       1.0.1
 
-gstat       1.1-4
+  + NMF      0.20.6
 
-gtable       0.2.0
+  + plot3D         1.1
 
-gtools       3.5.0
+  + plyr       1.8.4
 
-hydroGOF       0.3-8
+  + rgdal      1.1-10
 
-hydroTSM     0.4-2-1
+  + scatterplot3d      0.3-38
 
-igraph       1.0.1
+  + sp       1.2-4
 
-NMF      0.20.6
+  + spacetime       1.2-0
 
-plot3D         1.1
+  + spdep       0.6-9
 
-plyr       1.8.4
+  + tree      1.0-37
 
-rgdal      1.1-10
+  + trend       0.2.0
 
-scatterplot3d      0.3-38
+  + TSA        1.01
 
-sp       1.2-4
+  + tseries     0.10-37
 
-spacetime       1.2-0
+  + xtable       1.8-2
 
-spdep       0.6-9
-
-tree      1.0-37
-
-trend       0.2.0
-
-TSA        1.01
-
-tseries     0.10-37
-
-xtable       1.8-2
-
-xts       0.9-7
+  + xts       0.9-7
